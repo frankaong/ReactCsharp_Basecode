@@ -3,6 +3,7 @@ using ASI.Basecode.Data.Models;
 using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Manager;
 using AutoMapper;
+using System;
 using System.Linq;
 using static ASI.Basecode.Resources.Constants.Enums;
 
@@ -23,8 +24,11 @@ namespace ASI.Basecode.Services.Services
         {
             user = new User();
             var passwordKey = PasswordManager.EncryptPassword(password);
-            user = _repository.GetUsers().Where(x => x.UserId == userId &&
-                                                     x.Password == passwordKey).FirstOrDefault();
+            user = _repository.GetUsers()
+                        .Where(x => x.UserId == Convert.ToInt32(userId) &&
+                                    x.Password == passwordKey)
+                        .FirstOrDefault();
+
 
             return user != null ? LoginResult.Success : LoginResult.Failed;
         }
