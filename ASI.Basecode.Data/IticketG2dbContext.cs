@@ -37,7 +37,7 @@ public partial class IticketG2dbContext : DbContext
             entity.ToTable("feedback");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Content).HasColumnName("content");
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
@@ -55,7 +55,7 @@ public partial class IticketG2dbContext : DbContext
             entity.ToTable("KnowledgeBase");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Author)
                 .IsRequired()
@@ -89,7 +89,7 @@ public partial class IticketG2dbContext : DbContext
             entity.ToTable("tickets");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.Attachment).HasColumnName("attachment");
             entity.Property(e => e.Category)
@@ -120,7 +120,7 @@ public partial class IticketG2dbContext : DbContext
             entity.ToTable("users");
 
             entity.Property(e => e.Id)
-                .ValueGeneratedNever()
+                .ValueGeneratedOnAdd()
                 .HasColumnName("id");
             entity.Property(e => e.CreatedTime).HasColumnType("datetime");
             entity.Property(e => e.Email)
