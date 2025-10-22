@@ -10,11 +10,12 @@ namespace ASI.Basecode.Services.Interfaces
     public interface ITicketService
     {
 
-        //Task CreateTicket(Ticket ticket);
-        //Ticket GetById(int id);
-        //IEnumerable<Ticket> GetAll();
-        //Task Update(Ticket ticket);
-        //Task Delete(int id);
+        Task AddAsync(Ticket ticket);
+        Ticket GetById(int id);
+        IEnumerable<Ticket> GetTickets();
+        Task UpdateAsync(Ticket ticket);
+        Task DeleteAsync(Ticket ticket);
+        Task AssignTicketAsync(int ticketId, int assignedTo);
 
     }
 }

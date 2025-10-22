@@ -9,12 +9,12 @@ namespace ASI.Basecode.Data.Interfaces
 {
     public interface ITicketRepository
     {
-        //void Add(Ticket ticket);
-        //Ticket GetById(int id);
-        //IEnumerable<Ticket> GetAll();
-        //void Update(Ticket ticket);
-        //void Delete(int id);
-
+        Task AddAsync(Ticket ticket);
+        Ticket GetById(int id);
+        IEnumerable<Ticket> GetAll();
+        Task UpdateAsync(Ticket ticket);
+        Task DeleteAsync(Ticket ticket);
+        Task AssignTicketAsync(int ticketId, int assignedTo);
 
     }
 }

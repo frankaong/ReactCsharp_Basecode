@@ -73,7 +73,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
             model.Password = BCrypt.Net.BCrypt.HashPassword(model.Password);
 
-            await _userService.CreateAsync(model);
+            await _userService.AddAsync(model);
             return Ok(new { message = "User registered successfully!" });
         }
 
@@ -190,27 +190,18 @@ namespace ASI.Basecode.WebApp.Controllers
             }
         }
 
-
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
-        public IActionResult DeleteUser(int id)
+        public async Task<IActionResult> DeleteUser(int id)
         {
-            try
-            {
-                var user = _userService.GetById(id);
-                if (user == null)
-                {
-                    return NotFound(new { message = "User not found." });
-                }
+            var user = _userService.GetById(id);
+            if (user == null)
+                return NotFound(new { message = "User not found." });
 
-                _userService.Delete(user);
-                return Ok(new { message = "User deleted successfully!" });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error deleting user.", error = ex.Message });
-            }
+            await _userService.DeleteAsync(user);
+            return Ok(new { message = "User deleted successfully!" });
         }
+
 
         /// <summary>
         /// Sign Out current account

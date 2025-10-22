@@ -9,13 +9,11 @@ namespace ASI.Basecode.Data.Interfaces
     {
         IQueryable<User> GetUsers();
         User GetEmail(string email);
-        Task AddAsync(User user);
         IEnumerable<User> GetAll();
-        User GetById(int id);                      
-        void Delete(User user);
-
-        void Update(User user);
-        void SaveChanges();
+        User GetById(int id);
+        Task AddAsync(User user);
+        Task DeleteAsync(User user);
+        Task UpdateAsync(User user);
 
     }
 }

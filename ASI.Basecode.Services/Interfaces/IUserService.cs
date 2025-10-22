@@ -9,11 +9,11 @@ namespace ASI.Basecode.Services.Interfaces
     {
         LoginResult AuthenticateUser(string email, string password, ref User user);
         User GetEmail(string email);
-        Task CreateAsync(User user);
         IEnumerable<User> GetUsers();
         User GetById(int id);
+        Task AddAsync(User user);
         Task UpdateAsync(User user);
-        void Delete(User user);
+        Task DeleteAsync(User user);
 
     }
 }

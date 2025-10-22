@@ -27,7 +27,7 @@ namespace ASI.Basecode.Data.Repositories
         public async Task AddAsync(User user)
         {
             await this.GetDbSet<User>().AddAsync(user);
-            UnitOfWork.SaveChanges(); 
+            await UnitOfWork.SaveChangesAsync(); 
         }
 
         public IEnumerable<User> GetAll()
@@ -40,19 +40,16 @@ namespace ASI.Basecode.Data.Repositories
             return this.GetDbSet<User>().FirstOrDefault(u => u.Id == id);
         }
 
-        public void Delete(User user)
+        public async Task DeleteAsync(User user)
         {
             this.GetDbSet<User>().Remove(user);
-            UnitOfWork.SaveChanges();
-        }
-        public void Update(User user)
-        {
-            this.GetDbSet<User>().Update(user);
+            await UnitOfWork.SaveChangesAsync();
         }
 
-        public void SaveChanges()
+        public async Task UpdateAsync(User user)
         {
-            UnitOfWork.SaveChanges();
+            this.GetDbSet<User>().Update(user);
+            await UnitOfWork.SaveChangesAsync();
         }
 
     }

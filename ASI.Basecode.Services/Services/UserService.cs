@@ -29,7 +29,7 @@ namespace ASI.Basecode.Services.Services
             return _repository.GetEmail(email);
         }
 
-        public async Task CreateAsync(User user)
+        public async Task AddAsync(User user)
         {
             await _repository.AddAsync(user);
         }
@@ -64,9 +64,9 @@ namespace ASI.Basecode.Services.Services
             return _repository.GetById(id);
         }
 
-        public void Delete(User user)
+        public async Task DeleteAsync(User user)
         {
-            _repository.Delete(user);
+            await _repository.DeleteAsync(user);
         }
 
         public async Task UpdateAsync(User user)
@@ -84,8 +84,7 @@ namespace ASI.Basecode.Services.Services
                 existingUser.Password = user.Password;
             }
 
-            _repository.Update(existingUser);
-            _repository.SaveChanges(); // uses IUnitOfWork internally if implemented
+            await _repository.UpdateAsync(existingUser);
         }
 
 

@@ -1,6 +1,7 @@
 ﻿using ASI.Basecode.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 
 namespace ASI.Basecode.Data
 {
@@ -32,7 +33,10 @@ namespace ASI.Basecode.Data
             Database.SaveChanges();
         }
 
-
+        public async Task SaveChangesAsync()
+        {
+            await Database.SaveChangesAsync();
+        }
 
         /// <summary>
         /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
