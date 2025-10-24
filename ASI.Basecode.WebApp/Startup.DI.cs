@@ -53,7 +53,7 @@ namespace ASI.Basecode.WebApp
             this._services.AddCors(options =>
             {
                 options.AddPolicy("AllowReactApp",
-                    builder => builder.WithOrigins("https://localhost:8080")
+                    builder => builder.WithOrigins("http://localhost:8080")
                                       .AllowAnyHeader()
                                       .AllowAnyMethod()
                                       .AllowCredentials());
