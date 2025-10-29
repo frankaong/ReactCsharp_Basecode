@@ -83,6 +83,19 @@ namespace ASI.Basecode.WebApp
 
             services.AddMemoryCache();
 
+             // Add this block for CORS
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowReactApp", builder =>
+                {
+                    builder
+                        .WithOrigins("http://localhost:3000", "http://localhost:8080") 
+                        .AllowAnyHeader()
+                        .AllowAnyMethod()
+                        .AllowCredentials();
+                });
+            });
+
             // Register SQL database configuration context as services.
             services.AddDbContext<IticketG2dbContext>(options =>
             {

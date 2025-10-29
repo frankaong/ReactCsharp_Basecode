@@ -32,13 +32,16 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateTicket([FromBody] Ticket ticket)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            ticket.CreatedAt = DateTime.Now;
+            if (ticket.CreatedBy == 0)
+                return BadRequest(new { message = "CreatedBy is required." });
 
+            ticket.CreatedAt = DateTime.Now;
             await _ticketService.AddAsync(ticket);
 
             return Ok(new
@@ -47,6 +50,23 @@ namespace ASI.Basecode.WebApp.Controllers
                 ticket
             });
         }
+
+        //[HttpPost]
+        //public async Task<IActionResult> CreateTicket([FromBody] Ticket ticket)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    ticket.CreatedAt = DateTime.Now;
+
+        //    await _ticketService.AddAsync(ticket);
+
+        //    return Ok(new
+        //    {
+        //        message = "Ticket created successfully!",
+        //        ticket
+        //    });
+        //}
 
         [HttpGet]
         public IActionResult GetTickets()
