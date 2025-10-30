@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 namespace ASI.Basecode.WebApp.Controllers
 {
-    [Route("api/preference")]
+    [Route("api/[controller]")]
     [ApiController]
     [AllowAnonymous]
     public class PreferenceController : ControllerBase
