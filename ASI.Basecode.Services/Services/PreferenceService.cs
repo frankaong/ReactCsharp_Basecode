@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ASI.Basecode.Data.Models;
 
 namespace ASI.Basecode.Services.Services
 {
@@ -15,6 +16,16 @@ namespace ASI.Basecode.Services.Services
         public PreferenceService(IPreferenceRepository preferenceRepository)
         {
             _preferenceRepository = preferenceRepository;
+        }
+
+        public async Task<Preference?> GetByUserIdAsync(int userId)
+        {
+            return await _preferenceRepository.GetByUserIdAsync(userId);
+        }
+
+        public async Task AddOrUpdateAsync(Preference preference)
+        {
+            await _preferenceRepository.AddOrUpdateAsync(preference);
         }
     }
 }

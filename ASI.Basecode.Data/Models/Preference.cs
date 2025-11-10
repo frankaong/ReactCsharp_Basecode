@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 namespace ASI.Basecode.Data.Models;
 
 public partial class Preference
@@ -18,4 +20,13 @@ public partial class Preference
     public DateTime? CreatedAt { get; set; }
 
     public DateTime? UpdatedAt { get; set; }
+
+    [NotMapped]
+    public List<string> CardOrderList
+    {
+        get => string.IsNullOrEmpty(CardOrder)
+            ? new List<string>()
+            : JsonConvert.DeserializeObject<List<string>>(CardOrder);
+        set => CardOrder = JsonConvert.SerializeObject(value);
+    }
 }

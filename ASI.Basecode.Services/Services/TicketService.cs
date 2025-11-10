@@ -62,6 +62,13 @@ namespace ASI.Basecode.Services.Services
             await _ticketRepository.UpdateAsync(currentTicket);
         }
 
+        public async Task UnassignTicketAsync(int id)
+        {
+            await _ticketRepository.UnassignTicketAsync(id);
+        }
+
+
+
     }
 }
 

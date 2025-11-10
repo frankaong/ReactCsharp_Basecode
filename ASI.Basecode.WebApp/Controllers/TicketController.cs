@@ -32,13 +32,16 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> CreateTicket([FromBody] Ticket ticket)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            ticket.CreatedAt = DateTime.Now;
+            if (ticket.CreatedBy == 0)
+                return BadRequest(new { message = "CreatedBy is required." });
 
+            ticket.CreatedAt = DateTime.Now;
             await _ticketService.AddAsync(ticket);
 
             return Ok(new
@@ -87,6 +90,22 @@ namespace ASI.Basecode.WebApp.Controllers
                 return StatusCode(500, new { message = "An error occurred.", error = ex.Message });
             }
         }
+
+        [HttpPatch("Unassign/{id}")]
+        public async Task<IActionResult> UnassignTicket(int id)
+        {
+            try
+            {
+                await _ticketService.UnassignTicketAsync(id);
+                return Ok(new { message = "Ticket unassigned successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred.", error = ex.Message });
+            }
+        }
+
+
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTicket(int id)

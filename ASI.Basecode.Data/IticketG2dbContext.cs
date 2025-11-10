@@ -77,11 +77,18 @@ public partial class IticketG2dbContext : DbContext
             entity
                 .HasNoKey()
                 .ToTable("preferences");
+            entity.HasKey(e => e.Id);
+            entity.ToTable("preferences");
 
             entity.Property(e => e.CreatedAt).HasColumnType("datetime");
             entity.Property(e => e.Id).HasColumnName("id");
             entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
             entity.Property(e => e.UserId).HasColumnName("UserID");
+            entity.Property(e => e.ShowStats);
+            entity.Property(e => e.ShowSatisfaction);
+            entity.Property(e => e.CardOrder);
+            entity.Property(e => e.CreatedAt).HasColumnType("datetime");
+            entity.Property(e => e.UpdatedAt).HasColumnType("datetime");
         });
 
         modelBuilder.Entity<Ticket>(entity =>

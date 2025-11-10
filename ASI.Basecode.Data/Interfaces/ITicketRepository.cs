@@ -16,5 +16,7 @@ namespace ASI.Basecode.Data.Interfaces
         Task DeleteAsync(Ticket ticket);
         Task AssignTicketAsync(int ticketId, int assignedTo);
 
+        Task UnassignTicketAsync(int id);
+
     }
 }

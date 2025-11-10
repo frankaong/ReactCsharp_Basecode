@@ -192,6 +192,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> DeleteUser(int id)
         {
             var user = _userService.GetById(id);

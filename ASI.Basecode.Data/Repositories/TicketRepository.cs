@@ -1,11 +1,12 @@
-﻿using System;
+﻿using ASI.Basecode.Data.Interfaces;
+using ASI.Basecode.Data.Models;
+using Basecode.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ASI.Basecode.Data.Interfaces;
-using ASI.Basecode.Data.Models;
-using Basecode.Data.Repositories;
 
 namespace ASI.Basecode.Data.Repositories
 {
@@ -53,6 +54,21 @@ namespace ASI.Basecode.Data.Repositories
                 await UnitOfWork.SaveChangesAsync();
             }
         }
+
+        public async Task UnassignTicketAsync(int id)
+        {
+            var dbSet = GetDbSet<Ticket>();
+            var existingTicket = await dbSet.FirstOrDefaultAsync(t => t.Id == id);
+
+            if (existingTicket != null)
+            {
+                existingTicket.AssignedTo = null;
+                dbSet.Update(existingTicket);
+                await UnitOfWork.SaveChangesAsync();
+            }
+        }
+
+
 
     }
 }
