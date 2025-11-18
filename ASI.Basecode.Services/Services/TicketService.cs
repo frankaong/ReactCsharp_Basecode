@@ -67,6 +67,12 @@ namespace ASI.Basecode.Services.Services
             await _ticketRepository.UnassignTicketAsync(id);
         }
 
+        public async Task AutoMarkOverdueAsync()
+        {
+            await _ticketRepository.AutoMarkOverdueAsync();
+        }
+
+
 
 
     }

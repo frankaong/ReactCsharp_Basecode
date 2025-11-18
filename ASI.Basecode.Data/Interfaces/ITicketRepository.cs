@@ -17,6 +17,8 @@ namespace ASI.Basecode.Data.Interfaces
         Task AssignTicketAsync(int ticketId, int assignedTo);
 
         Task UnassignTicketAsync(int id);
+        Task AutoMarkOverdueAsync();
+
 
     }
 }

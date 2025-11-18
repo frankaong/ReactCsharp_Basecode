@@ -1,6 +1,7 @@
 ﻿using ASI.Basecode.Data.Interfaces;
 using ASI.Basecode.Data.Models;
 using ASI.Basecode.Services.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,12 +28,11 @@ namespace ASI.Basecode.Services.Services
 
         public async Task AddAsync(Feedback feedback)
         {
-            // simple validation or preprocessing can go here
-            if (string.IsNullOrEmpty(feedback.Title))
-                throw new System.ArgumentException("Feedback title is required.");
+            if (feedback == null)
+                throw new ArgumentNullException(nameof(feedback));
 
-            if (string.IsNullOrEmpty(feedback.Content))
-                throw new System.ArgumentException("Feedback content is required.");
+            feedback.Title ??= "";
+            feedback.Content ??= "";
 
             await _feedbackRepository.AddAsync(feedback);
         }

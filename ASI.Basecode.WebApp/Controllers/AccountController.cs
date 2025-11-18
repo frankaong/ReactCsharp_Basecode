@@ -142,7 +142,7 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public IActionResult GetUser(int id)
         {
             var user = _userService.GetById(id);
@@ -161,7 +161,7 @@ namespace ASI.Basecode.WebApp.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [AllowAnonymous]
         public async Task<IActionResult> UpdateUser(int id, [FromBody] User model)
         {
             try
@@ -191,7 +191,6 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
         [AllowAnonymous]
         public async Task<IActionResult> DeleteUser(int id)
         {

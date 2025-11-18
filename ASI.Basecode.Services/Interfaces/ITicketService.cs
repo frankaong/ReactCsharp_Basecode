@@ -17,7 +17,7 @@ namespace ASI.Basecode.Services.Interfaces
         Task DeleteAsync(Ticket ticket);
         Task AssignTicketAsync(int ticketId, int assignedTo);
         Task UnassignTicketAsync(int id);
-
+        Task AutoMarkOverdueAsync();
 
     }
 }

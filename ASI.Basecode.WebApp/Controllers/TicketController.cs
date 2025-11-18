@@ -52,11 +52,13 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetTickets()
+        public async Task<IActionResult> GetTickets()
         {
+            await _ticketService.AutoMarkOverdueAsync();
             var tickets = _ticketService.GetTickets();
             return Ok(tickets);
         }
+
 
         [HttpGet("{id}")]
         public IActionResult GetById(int id)
@@ -134,6 +136,20 @@ namespace ASI.Basecode.WebApp.Controllers
             catch (Exception ex)
             {
                 return NotFound(new { message = ex.Message });
+            }
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AutoMarkOverdue()
+        {
+            try
+            {
+                await _ticketService.AutoMarkOverdueAsync();
+                return Ok(new { message = "Overdue tickets updated successfully!" });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "An error occurred.", error = ex.Message });
             }
         }
 

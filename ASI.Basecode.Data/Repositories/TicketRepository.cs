@@ -68,6 +68,29 @@ namespace ASI.Basecode.Data.Repositories
             }
         }
 
+        public async Task AutoMarkOverdueAsync()
+        {
+            var dbSet = GetDbSet<Ticket>();
+            var now = DateTime.Now;
+
+            var overdueTickets = await dbSet
+                .Where(t =>
+                    t.DueDate < now &&
+                    t.Status != "Closed" &&
+                    t.Status != "Resolved" &&
+                    t.Status != "Overdue")
+                .ToListAsync();
+
+            if (overdueTickets.Any())
+            {
+                foreach (var ticket in overdueTickets)
+                {
+                    ticket.Status = "Overdue";
+                }
+
+                await UnitOfWork.SaveChangesAsync();
+            }
+        }
 
 
     }
