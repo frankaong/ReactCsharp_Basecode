@@ -1,4 +1,5 @@
 ﻿using ASI.Basecode.Data.Models;
+using ASI.Basecode.Services.DTO;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,6 @@ namespace ASI.Basecode.Services.Interfaces
     public interface ITicketService
     {
 
-        Task AddAsync(Ticket ticket);
         Ticket GetById(int id);
         IEnumerable<Ticket> GetTickets();
         Task UpdateAsync(Ticket ticket);
@@ -18,6 +18,8 @@ namespace ASI.Basecode.Services.Interfaces
         Task AssignTicketAsync(int ticketId, int assignedTo);
         Task UnassignTicketAsync(int id);
         Task AutoMarkOverdueAsync();
+        Task<Ticket> CreateTicketAsync(CreateTicketDto dto);
+
 
     }
 }

@@ -1,9 +1,11 @@
 ﻿using ASI.Basecode.Data.Interfaces;
 using ASI.Basecode.Data.Models;
+using ASI.Basecode.Services.DTO;
 using ASI.Basecode.Services.Interfaces;
 using AutoMapper;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -70,6 +72,45 @@ namespace ASI.Basecode.Services.Services
         public async Task AutoMarkOverdueAsync()
         {
             await _ticketRepository.AutoMarkOverdueAsync();
+        }
+
+        public async Task<Ticket> CreateTicketAsync(CreateTicketDto dto)
+        {
+            string? savedFileName = null;
+
+            if (dto.Attachment != null)
+            {
+                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+
+                Directory.CreateDirectory(uploadsFolder);
+
+                savedFileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.Attachment.FileName);
+
+                var filePath = Path.Combine(uploadsFolder, savedFileName);
+
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await dto.Attachment.CopyToAsync(stream);
+                }
+            }
+
+            var ticket = new Ticket
+            {
+                Title = dto.Title,
+                Description = dto.Description,
+                Category = dto.Category,
+                Priority = dto.Priority,
+                AssignedTo = dto.AssignedTo,
+                DueDate = dto.DueDate,
+                Status = dto.Status,
+                CreatedAt = dto.CreatedAt,
+                CreatedBy = dto.CreatedBy,
+                Attachment = savedFileName,   
+            };
+
+            await _ticketRepository.AddAsync(ticket);
+
+            return ticket;
         }
 
 

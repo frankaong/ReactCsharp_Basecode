@@ -1,4 +1,5 @@
 ﻿using ASI.Basecode.Data.Models;
+using ASI.Basecode.Services.DTO;
 using ASI.Basecode.Services.Interfaces;
 using ASI.Basecode.Services.Services;
 using ASI.Basecode.WebApp.Mvc;
@@ -33,16 +34,12 @@ namespace ASI.Basecode.WebApp.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> CreateTicket([FromBody] Ticket ticket)
+        public async Task<IActionResult> CreateTicket([FromForm] CreateTicketDto dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (ticket.CreatedBy == 0)
-                return BadRequest(new { message = "CreatedBy is required." });
-
-            ticket.CreatedAt = DateTime.Now;
-            await _ticketService.AddAsync(ticket);
+            var ticket = await _ticketService.CreateTicketAsync(dto);
 
             return Ok(new
             {
@@ -50,6 +47,7 @@ namespace ASI.Basecode.WebApp.Controllers
                 ticket
             });
         }
+
 
         [HttpGet]
         public async Task<IActionResult> GetTickets()
