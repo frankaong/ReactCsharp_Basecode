@@ -149,7 +149,6 @@ namespace ASI.Basecode.WebApp.Controllers
             if (user == null)
                 return NotFound(new { message = "User not found." });
 
-            // ✅ Return only safe fields
             return Ok(new
             {
                 user.Id,
@@ -170,7 +169,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 if (existingUser == null)
                     return NotFound(new { message = "User not found." });
 
-                // Update fields
                 existingUser.Name = model.Name;
                 existingUser.Email = model.Email;
                 existingUser.Role = model.Role;

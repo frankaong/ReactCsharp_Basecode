@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 
 namespace ASI.Basecode.Services.Interfaces
 {
@@ -19,6 +20,7 @@ namespace ASI.Basecode.Services.Interfaces
         Task UnassignTicketAsync(int id);
         Task AutoMarkOverdueAsync();
         Task<Ticket> CreateTicketAsync(CreateTicketDto dto);
+        Task<string?> UploadAttachmentAsync(IFormFile? file);
 
 
     }

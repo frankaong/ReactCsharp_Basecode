@@ -70,7 +70,7 @@ namespace ASI.Basecode.WebApp.Controllers
         }
 
 
-        [HttpPatch("{id}")]
+        [HttpPut("{id}")]
         public async Task<IActionResult> AssignTicket(int id, [FromBody] JsonElement data)
         {
             try
@@ -92,7 +92,7 @@ namespace ASI.Basecode.WebApp.Controllers
             }
         }
 
-        [HttpPatch("Unassign/{id}")]
+        [HttpPut("Unassign/{id}")]
         public async Task<IActionResult> UnassignTicket(int id)
         {
             try
@@ -152,25 +152,22 @@ namespace ASI.Basecode.WebApp.Controllers
             }
         }
 
-        [HttpPost("UploadAttachment")]
+        [HttpPost]
         public async Task<IActionResult> UploadAttachment([FromForm] IFormFile file)
         {
-            if (file == null || file.Length == 0)
-                return BadRequest(new { message = "No file uploaded." });
-
-            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-            Directory.CreateDirectory(uploadsFolder);
-
-            var savedFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            var filePath = Path.Combine(uploadsFolder, savedFileName);
-
-            using (var stream = new FileStream(filePath, FileMode.Create))
+            try
             {
-                await file.CopyToAsync(stream);
+                var savedFileName = await _ticketService.UploadAttachmentAsync(file);
+                return Ok(new { fileName = savedFileName });
             }
-
-            // Return the saved file name so the frontend can store it in the ticket
-            return Ok(new { fileName = savedFileName });
+            catch (ArgumentException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "File upload failed.", error = ex.Message });
+            }
         }
 
         public IActionResult Index()

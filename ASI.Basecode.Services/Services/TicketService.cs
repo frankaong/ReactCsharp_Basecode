@@ -3,6 +3,7 @@ using ASI.Basecode.Data.Models;
 using ASI.Basecode.Services.DTO;
 using ASI.Basecode.Services.Interfaces;
 using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -74,25 +75,28 @@ namespace ASI.Basecode.Services.Services
             await _ticketRepository.AutoMarkOverdueAsync();
         }
 
+        public async Task<string?> UploadAttachmentAsync(IFormFile? file)
+        {
+            if (file == null || file.Length == 0)
+                return null;
+
+            var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
+            Directory.CreateDirectory(uploadsFolder);
+
+            var savedFileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            var filePath = Path.Combine(uploadsFolder, savedFileName);
+
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
+
+            return savedFileName;
+        }
+
         public async Task<Ticket> CreateTicketAsync(CreateTicketDto dto)
         {
-            string? savedFileName = null;
-
-            if (dto.Attachment != null)
-            {
-                var uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "uploads");
-
-                Directory.CreateDirectory(uploadsFolder);
-
-                savedFileName = Guid.NewGuid().ToString() + Path.GetExtension(dto.Attachment.FileName);
-
-                var filePath = Path.Combine(uploadsFolder, savedFileName);
-
-                using (var stream = new FileStream(filePath, FileMode.Create))
-                {
-                    await dto.Attachment.CopyToAsync(stream);
-                }
-            }
+            string? savedFileName = await UploadAttachmentAsync(dto.Attachment);
 
             var ticket = new Ticket
             {

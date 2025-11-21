@@ -24,12 +24,11 @@ namespace ASI.Basecode.WebApp.Controllers
             _preferenceService = preferenceService;
         }
         [HttpGet("{userId}")]
-        public async Task<IActionResult> Get(int userId)
+        public async Task<IActionResult> GetPreferences(int userId)
         {
             var pref = await _preferenceService.GetByUserIdAsync(userId);
             if (pref == null)
             {
-                // Return default preferences if not found
                 return Ok(new
                 {
                     userId,
@@ -39,7 +38,6 @@ namespace ASI.Basecode.WebApp.Controllers
                 });
             }
 
-            // Return as array for frontend
             return Ok(new
             {
                 userId = pref.UserId,
@@ -47,17 +45,20 @@ namespace ASI.Basecode.WebApp.Controllers
                 showSatisfaction = pref.ShowSatisfaction ?? true,
                 cardOrder = pref.CardOrderList
             });
-            //return Ok(new { message = "Preference endpoint is working", userId });
         }
 
-        [HttpPatch("{userId}")]
-        public async Task<IActionResult> Patch(int userId, [FromBody] PreferenceDto dto)
+        [HttpPut("{userId}")]
+        public async Task<IActionResult> UpdatePreferences(int userId, [FromBody] PreferenceDto dto)
         {
             if (dto == null || dto.UserId != userId)
                 return BadRequest();
 
-            // Get or create preference
-            var pref = await _preferenceService.GetByUserIdAsync(userId) ?? new Preference { UserId = userId };
+            var pref = await _preferenceService.GetByUserIdAsync(userId);
+
+            if (pref == null)
+            {
+                pref = new Preference { UserId = userId };
+            }
 
             pref.ShowStats = dto.ShowStats;
             pref.ShowSatisfaction = dto.ShowSatisfaction;
@@ -67,7 +68,6 @@ namespace ASI.Basecode.WebApp.Controllers
             return Ok();
         }
 
-        // DTO for PATCH
         public class PreferenceDto
         {
             public int UserId { get; set; }
